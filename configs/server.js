@@ -4,6 +4,8 @@ import express from "express"
 import cors from "cors"
 import helmet from "helmet"
 import morgan from "morgan"
+import apiLimiter from "../src/middlewares/rate-limit-validators.js"
+import authRoutes from "../src/auth/auth.routes.js"
 import { dbConnection } from "./mongo.js"
 
 
@@ -29,10 +31,12 @@ const middlewares = (app) => {
         crossOriginResourcePolicy: false 
     }));
     app.use(morgan("dev"))
+    app.use(apiLimiter)
     }
 
 
 const routes = (app) =>{
+    app.use("/pensum/v1/auth", authRoutes)
 }
 
 const conectarDB = async () =>{
